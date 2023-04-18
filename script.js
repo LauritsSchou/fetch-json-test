@@ -1,6 +1,6 @@
 "use strict";
 const endpoint =
-  "https://raw.githubusercontent.com/cederdorff/mdu-frontend/main/data/";
+  "https://forms-rest-crud-project-default-rtdb.europe-west1.firebasedatabase.app/";
 window.addEventListener("load", initApp);
 async function initApp() {
   console.log("initApp is running");
@@ -8,6 +8,11 @@ async function initApp() {
   posts.forEach(showPosts);
   const users = await getUsers();
   users.forEach(showUsers);
+  createPost(
+    "My First Post",
+    "https://images.unsplash.com/photo-1641876749963-550554c7258d",
+    "My body text"
+  );
 }
 async function getPosts() {
   const response = await fetch(`${endpoint}/posts.json`);
@@ -83,14 +88,15 @@ function showUsers(user) {
   document.querySelector("#users").insertAdjacentHTML("beforeend", userHTML);
 }
 // === CREATE (POST) === //
-async function createPost(title, image) {
-  const newPost = { title, image };
+async function createPost(title, image, body) {
+  const newPost = { title: title, image: image, body: body };
   const postAsJson = JSON.stringify(newPost);
 
   const res = await fetch(`${endpoint}/posts.json`, {
     method: "POST",
     body: postAsJson,
   });
+  console.log(newPost);
   const data = await res.json();
   console.log(data);
 }
@@ -98,24 +104,24 @@ async function createPost(title, image) {
 // test the function
 // createPost("My First Post", "https://images.unsplash.com/photo-1641876749963-550554c7258d");
 // === UPDATE (PUT) === //
-async function updatePost(id, title, image) {
-  const postToUpdate = { title, image };
-  const postAsJson = JSON.stringify(postToUpdate);
-  const url = `${endpoint}/posts/${id}.json`;
+// async function updatePost(id, title, image) {
+//   const postToUpdate = { title, image };
+//   const postAsJson = JSON.stringify(postToUpdate);
+//   const url = `${endpoint}/posts/${id}.json`;
 
-  const res = await fetch(url, { method: "PUT", body: postAsJson });
-  const data = await res.json();
-  console.log(data);
-}
+//   const res = await fetch(url, { method: "PUT", body: postAsJson });
+//   const data = await res.json();
+//   console.log(data);
+// }
 
-// test the function
-// updatePost("5tl4jHHSRaKEB0UW9nQd", "My Second Post", "https://images.unsplash.com/photo-1641876749963-550554c7258d");
-// === DELETE (DELETE) === //
-async function deletePost(id) {
-  const url = `${endpoint}/posts/${id}.json`;
-  const res = await fetch(url, { method: "DELETE" });
-  console.log(res);
-}
+// // test the function
+// // updatePost("5tl4jHHSRaKEB0UW9nQd", "My Second Post", "https://images.unsplash.com/photo-1641876749963-550554c7258d");
+// // === DELETE (DELETE) === //
+// async function deletePost(id) {
+//   const url = `${endpoint}/posts/${id}.json`;
+//   const res = await fetch(url, { method: "DELETE" });
+//   console.log(res);
+// }
 
 // test the function
 // deletePost("5tl4jHHSRaKEB0UW9nQd");
