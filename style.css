@@ -20,6 +20,7 @@ h1 {
 h2 {
   font-weight: 500;
   letter-spacing: 0.1px;
+  text-align: center;
 }
 
 h3 {
@@ -99,13 +100,12 @@ main {
 }
 form {
   margin: 2em auto 0;
-  background-color: red;
   padding: 1em 1em 2em;
   text-align: center;
 }
 
 dialog {
-  border-color: red;
+  border-color: whitesmoke;
   background-color: whitesmoke;
   width: 65vw;
   padding: 2em 1em;
@@ -125,4 +125,20 @@ dialog p {
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+}
+button {
+  background-color: #fff;
+  color: #000;
+  font-size: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+.btns {
+  text-align: center;
 }

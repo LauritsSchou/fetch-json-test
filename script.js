@@ -1,18 +1,16 @@
 "use strict";
-const endpoint =
-  "https://forms-rest-crud-project-default-rtdb.europe-west1.firebasedatabase.app/";
+const endpoint = "https://forms-rest-crud-project-default-rtdb.europe-west1.firebasedatabase.app/";
 window.addEventListener("load", initApp);
 async function initApp() {
   console.log("initApp is running");
+  // const users = await getUsers();
+  // users.forEach(showUsers);
+  updatePostsGrid();
+  document.querySelector(".create").addEventListener("click", createPostClicked);
+}
+async function updatePostsGrid() {
   const posts = await getPosts();
-  posts.forEach(showPosts);
-  const users = await getUsers();
-  users.forEach(showUsers);
-  createPost(
-    "My First Post",
-    "https://images.unsplash.com/photo-1641876749963-550554c7258d",
-    "My body text"
-  );
+  showPosts(posts);
 }
 async function getPosts() {
   const response = await fetch(`${endpoint}/posts.json`);
@@ -30,19 +28,37 @@ function preparePostData(dataObject) {
   }
   return postArray;
 }
-function showPosts(post) {
+function showPosts(listOfPosts) {
+  document.querySelector("#posts").innerHTML = "";
+  for (const post of listOfPosts) {
+    showPost(post);
+  }
+}
+function showPost(post) {
   console.log("showPosts is running");
   const postHTML = /*html*/ ` <article class="grid-item">
                 <img src="${post.image}">
                 <h2>${post.title}</h2>
                 <h2>${post.body}</h2>
+                <div class="btns">
+                <button class="delete">Delete</button>
+                <button class="update">Update</button>
+                </div>
                 
             </article>`;
   document.querySelector("#posts").insertAdjacentHTML("beforeend", postHTML);
-  document
-    .querySelector("#posts article:last-child")
-    .addEventListener("click", clickPost);
-
+  document.querySelector("#posts article:last-child img").addEventListener("click", clickPost);
+  document.querySelector("#posts article:last-child .delete").addEventListener("click", deleteClicked);
+  document.querySelector("#posts article:last-child .update").addEventListener("click", updateClicked);
+  function deleteClicked() {
+    deletePost(post.id);
+  }
+  function updateClicked() {
+    const title = `${post.title} Updated`;
+    const body = "Updated";
+    const image = "https://images.unsplash.com/photo-1641876749963-550554c7258d";
+    updatePost(post.id, title, body, image);
+  }
   function clickPost() {
     console.log("clickPost is running");
     document.querySelector("#postDetails").showModal();
@@ -57,71 +73,74 @@ function showPosts(post) {
     document.querySelector("#postDetails").innerHTML = dialogHTML;
   }
 }
-async function getUsers() {
-  console.log("getUsers is running");
-  const response = await fetch(`${endpoint}/users.json`);
-  const data = await response.json();
-  const users = prepareUserData(data);
-  prepareUserData(data);
-  return users;
-}
-function prepareUserData(dataObject) {
-  console.log("prepareUserData is running");
-  const userArray = [];
-  for (const key in dataObject) {
-    const user = dataObject[key];
-    user.id = key;
-    userArray.push(user);
+
+async function deletePost(id) {
+  console.log(id);
+  const response = await fetch(`${endpoint}/posts/${id}.json`, { method: "DELETE" });
+  if (response.ok) {
+    updatePostsGrid();
   }
-  return userArray;
 }
-function showUsers(user) {
-  console.log("showUsers is running");
-  const userHTML = /*html*/ ` <article class="grid-item">
-                <img src="${user.image}">
-                <h2>${user.name}</h2>
-                <h2>${user.title}</h2>
-                <h2>${user.mail}</h2>
-                <h2>${user.phone}</h2>
-                
-            </article>`;
-  document.querySelector("#users").insertAdjacentHTML("beforeend", userHTML);
+// === UPDATE (PUT) === //
+async function updatePost(id, title, body, image) {
+  const postToUpdate = { title, body, image };
+  const postAsJson = JSON.stringify(postToUpdate);
+  const url = `${endpoint}/posts/${id}.json`;
+
+  const response = await fetch(url, { method: "PUT", body: postAsJson });
+  if (response.ok) {
+    console.log("Post succesfully updated");
+    updatePostsGrid();
+  }
 }
 // === CREATE (POST) === //
-async function createPost(title, image, body) {
-  const newPost = { title: title, image: image, body: body };
-  const postAsJson = JSON.stringify(newPost);
-
-  const res = await fetch(`${endpoint}/posts.json`, {
-    method: "POST",
-    body: postAsJson,
-  });
-  console.log(newPost);
-  const data = await res.json();
-  console.log(data);
+function createPostClicked() {
+  const randomNumber = Math.floor(Math.random() * 100 + 1);
+  const title = `My post title ${randomNumber}`;
+  const body = "Body text 123";
+  const image = "https://images.unsplash.com/photo-1641876749963-550554c7258d";
+  createPost(title, image, body);
 }
+async function createPost(title, image, body) {
+  const newPost = { title, body, image };
+  const json = JSON.stringify(newPost);
 
-// test the function
-// createPost("My First Post", "https://images.unsplash.com/photo-1641876749963-550554c7258d");
-// === UPDATE (PUT) === //
-// async function updatePost(id, title, image) {
-//   const postToUpdate = { title, image };
-//   const postAsJson = JSON.stringify(postToUpdate);
-//   const url = `${endpoint}/posts/${id}.json`;
-
-//   const res = await fetch(url, { method: "PUT", body: postAsJson });
-//   const data = await res.json();
-//   console.log(data);
+  const response = await fetch(`${endpoint}/posts.json`, {
+    method: "POST",
+    body: json,
+  });
+  if (response.ok) {
+    console.log("New post succesfully created");
+    updatePostsGrid();
+  }
+}
+// async function getUsers() {
+//   console.log("getUsers is running");
+//   const response = await fetch(`${endpoint}/users.json`);
+//   const data = await response.json();
+//   const users = prepareUserData(data);
+//   prepareUserData(data);
+//   return users;
 // }
-
-// // test the function
-// // updatePost("5tl4jHHSRaKEB0UW9nQd", "My Second Post", "https://images.unsplash.com/photo-1641876749963-550554c7258d");
-// // === DELETE (DELETE) === //
-// async function deletePost(id) {
-//   const url = `${endpoint}/posts/${id}.json`;
-//   const res = await fetch(url, { method: "DELETE" });
-//   console.log(res);
+// function prepareUserData(dataObject) {
+//   console.log("prepareUserData is running");
+//   const userArray = [];
+//   for (const key in dataObject) {
+//     const user = dataObject[key];
+//     user.id = key;
+//     userArray.push(user);
+//   }
+//   return userArray;
 // }
+// function showUsers(user) {
+//   console.log("showUsers is running");
+//   const userHTML = /*html*/ ` <article class="grid-item">
+//                 <img src="${user.image}">
+//                 <h2>${user.name}</h2>
+//                 <h2>${user.title}</h2>
+//                 <h2>${user.mail}</h2>
+//                 <h2>${user.phone}</h2>
 
-// test the function
-// deletePost("5tl4jHHSRaKEB0UW9nQd");
+//             </article>`;
+//   document.querySelector("#users").insertAdjacentHTML("beforeend", userHTML);
+// }
