@@ -1,12 +1,15 @@
 "use strict";
-const endpoint = "https://forms-rest-crud-project-default-rtdb.europe-west1.firebasedatabase.app/";
+const endpoint =
+  "https://forms-rest-crud-project-default-rtdb.europe-west1.firebasedatabase.app/";
 window.addEventListener("load", initApp);
 async function initApp() {
   console.log("initApp is running");
   // const users = await getUsers();
   // users.forEach(showUsers);
   updatePostsGrid();
-  document.querySelector(".create").addEventListener("click", createPostClicked);
+  document
+    .querySelector(".create")
+    .addEventListener("click", createPostClicked);
 }
 async function updatePostsGrid() {
   const posts = await getPosts();
@@ -38,7 +41,7 @@ function showPost(post) {
   console.log("showPosts is running");
   const postHTML = /*html*/ ` <article class="grid-item">
                 <img src="${post.image}">
-                <h2>${post.title}</h2>
+                <h1>${post.title}</h1>
                 <h2>${post.body}</h2>
                 <div class="btns">
                 <button class="delete">Delete</button>
@@ -47,16 +50,23 @@ function showPost(post) {
                 
             </article>`;
   document.querySelector("#posts").insertAdjacentHTML("beforeend", postHTML);
-  document.querySelector("#posts article:last-child img").addEventListener("click", clickPost);
-  document.querySelector("#posts article:last-child .delete").addEventListener("click", deleteClicked);
-  document.querySelector("#posts article:last-child .update").addEventListener("click", updateClicked);
+  document
+    .querySelector("#posts article:last-child img")
+    .addEventListener("click", clickPost);
+  document
+    .querySelector("#posts article:last-child .delete")
+    .addEventListener("click", deleteClicked);
+  document
+    .querySelector("#posts article:last-child .update")
+    .addEventListener("click", updateClicked);
   function deleteClicked() {
     deletePost(post.id);
   }
   function updateClicked() {
     const title = `${post.title} Updated`;
     const body = "Updated";
-    const image = "https://images.unsplash.com/photo-1641876749963-550554c7258d";
+    const image =
+      "https://images.unsplash.com/photo-1641876749963-550554c7258d";
     updatePost(post.id, title, body, image);
   }
   function clickPost() {
@@ -76,7 +86,9 @@ function showPost(post) {
 
 async function deletePost(id) {
   console.log(id);
-  const response = await fetch(`${endpoint}/posts/${id}.json`, { method: "DELETE" });
+  const response = await fetch(`${endpoint}/posts/${id}.json`, {
+    method: "DELETE",
+  });
   if (response.ok) {
     updatePostsGrid();
   }
@@ -98,7 +110,8 @@ function createPostClicked() {
   const randomNumber = Math.floor(Math.random() * 100 + 1);
   const title = `My post title ${randomNumber}`;
   const body = "Body text 123";
-  const image = "https://images.unsplash.com/photo-1641876749963-550554c7258d";
+  const image =
+    "https://images.twinkl.co.uk/tr/raw/upload/u/ux/usawiki-fish-clownfish_ver_1.jpg";
   createPost(title, image, body);
 }
 async function createPost(title, image, body) {

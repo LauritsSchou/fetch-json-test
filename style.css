@@ -2,31 +2,36 @@ html {
   color: black;
   height: 100%;
   width: 100%;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Carlito", sans-serif;
 }
 
 body {
   margin: 0;
   font-size: 1.3em;
 }
-
-h1 {
+header {
+  text-align: center;
   font-size: 2em;
+}
+h1 {
+  font-size: 1.2em;
   font-weight: 500;
   letter-spacing: 0.1px;
-  text-align: center;
+  font-weight: bold;
+  margin-bottom: 0.3em;
+  margin-top: 0.5em;
 }
 
 h2 {
+  font-size: 1em;
   font-weight: 500;
   letter-spacing: 0.1px;
-  text-align: center;
+  margin-top: 0.1em;
 }
 
 h3 {
   font-weight: 500;
   letter-spacing: 0.1px;
-  text-align: center;
 }
 /* ---------- main page styling ---------- */
 main {
@@ -48,7 +53,7 @@ main {
 }
 @media (min-width: 1500px) {
   .grid-container {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
 
@@ -61,6 +66,9 @@ main {
   transition: 0.5s;
   animation: fadeIn 0.5s;
   cursor: pointer;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 .grid-item:hover {
@@ -68,9 +76,9 @@ main {
 }
 
 .grid-item img {
-  width: 100%;
+  width: 400px;
   height: 400px;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .grid-item p {
@@ -107,24 +115,28 @@ dialog p {
 button {
   background-color: #fff;
   color: black;
-  font-size: 20px;
-  padding: 10px 20px;
+  font-size: 17px;
+  padding: 5px 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 1px;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
   border: 1px solid #ccc;
-  text-align: center;
-  position: static;
+  font-family: "Carlito", sans-serif;
 }
 .btns {
-  text-align: center;
-}
-.create {
-  font-size: 30px;
-  padding: 20px 40px;
+  text-align: left;
+  justify-content: flex-start;
+  margin-top: auto;
 }
 button:hover {
   box-shadow: 0 8px 16px 0;
+}
+button.create {
+  display: block;
+  padding: 5px 10px;
+  border-radius: 1px;
+  font-size: 1em;
+  margin: 0 auto;
 }
