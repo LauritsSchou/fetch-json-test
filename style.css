@@ -28,17 +28,6 @@ h3 {
   letter-spacing: 0.1px;
   text-align: center;
 }
-header {
-  background-color: red;
-  color: black;
-  padding: 1em;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-}
-
 /* ---------- main page styling ---------- */
 main {
   animation: fadeIn 0.4s;
@@ -57,20 +46,9 @@ main {
     grid-template-columns: 1fr 1fr;
   }
 }
-
-@media (min-width: 992px) {
-  .grid-container {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-@media (min-width: 1200px) {
-  .grid-container {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-}
 @media (min-width: 1500px) {
   .grid-container {
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
@@ -86,7 +64,7 @@ main {
 }
 
 .grid-item:hover {
-  box-shadow: 0 8px 16px 0 var(--green);
+  box-shadow: 0 8px 16px 0;
 }
 
 .grid-item img {
@@ -128,7 +106,7 @@ dialog p {
 }
 button {
   background-color: #fff;
-  color: #000;
+  color: black;
   font-size: 20px;
   padding: 10px 20px;
   border: none;
@@ -138,7 +116,15 @@ button {
   cursor: pointer;
   border: 1px solid #ccc;
   text-align: center;
+  position: static;
 }
 .btns {
   text-align: center;
+}
+.create {
+  font-size: 30px;
+  padding: 20px 40px;
+}
+button:hover {
+  box-shadow: 0 8px 16px 0;
 }
