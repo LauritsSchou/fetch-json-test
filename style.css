@@ -8,6 +8,7 @@ html {
 body {
   margin: 0;
   font-size: 1.3em;
+  background-color: #f6f7f0;
 }
 header {
   text-align: center;
@@ -62,7 +63,7 @@ main {
 .grid-item {
   box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
   padding: 1.5em;
-  background-color: var(--white);
+  background-color: white;
   transition: 0.5s;
   animation: fadeIn 0.5s;
   cursor: pointer;
