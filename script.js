@@ -1,15 +1,12 @@
 "use strict";
-const endpoint =
-  "https://forms-rest-crud-project-default-rtdb.europe-west1.firebasedatabase.app/";
+const endpoint = "https://forms-rest-crud-project-default-rtdb.europe-west1.firebasedatabase.app/";
 window.addEventListener("load", initApp);
 async function initApp() {
   console.log("initApp is running");
   // const users = await getUsers();
   // users.forEach(showUsers);
   updatePostsGrid();
-  document
-    .querySelector(".create")
-    .addEventListener("click", createPostClicked);
+  document.querySelector(".create").addEventListener("click", createPostClicked);
 }
 async function updatePostsGrid() {
   const posts = await getPosts();
@@ -50,23 +47,16 @@ function showPost(post) {
                 
             </article>`;
   document.querySelector("#posts").insertAdjacentHTML("beforeend", postHTML);
-  document
-    .querySelector("#posts article:last-child img")
-    .addEventListener("click", clickPost);
-  document
-    .querySelector("#posts article:last-child .delete")
-    .addEventListener("click", deleteClicked);
-  document
-    .querySelector("#posts article:last-child .update")
-    .addEventListener("click", updateClicked);
+  document.querySelector("#posts article:last-child img").addEventListener("click", clickPost);
+  document.querySelector("#posts article:last-child .delete").addEventListener("click", deleteClicked);
+  document.querySelector("#posts article:last-child .update").addEventListener("click", updateClicked);
   function deleteClicked() {
     deletePost(post.id);
   }
   function updateClicked() {
     const title = `${post.title} Updated`;
     const body = "Updated";
-    const image =
-      "https://images.unsplash.com/photo-1641876749963-550554c7258d";
+    const image = "https://images.unsplash.com/photo-1641876749963-550554c7258d";
     updatePost(post.id, title, body, image);
   }
   function clickPost() {
@@ -85,7 +75,6 @@ function showPost(post) {
 }
 
 async function deletePost(id) {
-  console.log(id);
   const response = await fetch(`${endpoint}/posts/${id}.json`, {
     method: "DELETE",
   });
@@ -106,54 +95,56 @@ async function updatePost(id, title, body, image) {
   }
 }
 // === CREATE (POST) === //
-function createPostClicked() {
-  const randomNumber = Math.floor(Math.random() * 100 + 1);
-  const title = `My post title ${randomNumber}`;
-  const body = "Body text 123";
-  const image =
-    "https://images.twinkl.co.uk/tr/raw/upload/u/ux/usawiki-fish-clownfish_ver_1.jpg";
-  createPost(title, image, body);
+function createPostClicked(event) {
+  //HARDCODED
+  // const randomNumber = Math.floor(Math.random() * 100 + 1);
+  // const title = `My post title ${randomNumber}`;
+  // const body = "Body text 123";
+  // const image = "https://images.twinkl.co.uk/tr/raw/upload/u/ux/usawiki-fish-clownfish_ver_1.jpg";
+  //open modal to show form
+  document.querySelector("#create-form").showModal();
+  const createPostForm = /*html*/ `
+    <form id="create-post">
+      <label for image>
+        Image:
+      </label>
+      <input type="file" id="image" name="image" accept="image/png, image/jpeg" />
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required />
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description" />
+      <div id="privacy">
+        <label for privacy_settings_public>
+          Public
+        </label>
+        <input type="radio" id="public" name="public" value="public" />
+        <label for privacy_settings_private>
+          Private
+        </label>
+        <input type="radio" id="private" name="private" value="private" />
+      </div>
+      <input type="button" id="btn-submit" value="Post">
+    </form>
+    `;
+  document.querySelector("#create-form").innerHTML = createPostForm;
+  document.querySelector("#btn-submit").addEventListener("click", prepareNewPostData);
 }
-async function createPost(title, image, body) {
-  const newPost = { title, body, image };
-  const json = JSON.stringify(newPost);
+function prepareNewPostData() {
+  console.log("prepareNewPostData is running");
 
-  const response = await fetch(`${endpoint}/posts.json`, {
-    method: "POST",
-    body: json,
-  });
+  const image = document.querySelector("#image").value;
+  const title = document.querySelector("#title").value;
+  const body = document.querySelector("#description").value;
+  submitNewPost(image, title, body);
+}
+async function submitNewPost(image, title, body) {
+  console.log("submitNewPost is running");
+  const newPost = { image, title, body };
+  const postAsJson = JSON.stringify(newPost);
+  const response = await fetch(`${endpoint}/posts.json`, { method: "POST", body: postAsJson });
   if (response.ok) {
-    console.log("New post succesfully created");
+    console.log("New post added");
     updatePostsGrid();
+    document.querySelector("#create-form").close();
   }
 }
-// async function getUsers() {
-//   console.log("getUsers is running");
-//   const response = await fetch(`${endpoint}/users.json`);
-//   const data = await response.json();
-//   const users = prepareUserData(data);
-//   prepareUserData(data);
-//   return users;
-// }
-// function prepareUserData(dataObject) {
-//   console.log("prepareUserData is running");
-//   const userArray = [];
-//   for (const key in dataObject) {
-//     const user = dataObject[key];
-//     user.id = key;
-//     userArray.push(user);
-//   }
-//   return userArray;
-// }
-// function showUsers(user) {
-//   console.log("showUsers is running");
-//   const userHTML = /*html*/ ` <article class="grid-item">
-//                 <img src="${user.image}">
-//                 <h2>${user.name}</h2>
-//                 <h2>${user.title}</h2>
-//                 <h2>${user.mail}</h2>
-//                 <h2>${user.phone}</h2>
-
-//             </article>`;
-//   document.querySelector("#users").insertAdjacentHTML("beforeend", userHTML);
-// }
