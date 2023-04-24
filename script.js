@@ -105,10 +105,10 @@ function createPostClicked(event) {
   document.querySelector("#create-form").showModal();
   const createPostForm = /*html*/ `
     <form id="create-post">
-      <label for image>
-        Image:
+      <label for image-url>
+        Image URL:
       </label>
-      <input type="file" id="image" name="image" accept="image/png, image/jpeg" />
+      <input type="url" id="image" name="image"/>
       <label for="title">Title:</label>
       <input type="text" id="title" name="title" required />
       <label for="description">Description:</label>
