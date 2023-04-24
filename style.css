@@ -47,6 +47,7 @@ main {
   grid-template-columns: 1fr;
   gap: 1em;
   padding: 1em;
+  justify-items: center;
 }
 
 @media (min-width: 900px) {

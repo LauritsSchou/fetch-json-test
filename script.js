@@ -53,16 +53,11 @@ function showPost(post) {
   function deleteClicked() {
     deletePost(post.id);
   }
-  function updateClicked() {
-    const title = `${post.title} Updated`;
-    const body = "Updated";
-    const image = "https://images.unsplash.com/photo-1641876749963-550554c7258d";
-    updatePost(post.id, title, body, image);
-  }
-  function clickPost() {
-    console.log("clickPost is running");
-    document.querySelector("#postDetails").showModal();
-    const dialogHTML = /*html*/ `
+}
+function clickPost() {
+  console.log("clickPost is running");
+  document.querySelector("#postDetails").showModal();
+  const dialogHTML = /*html*/ `
     <h1>${post.title}</h1>
 <img src="${post.image}" class="center">
 <h2>${post.body}</h2>
@@ -70,8 +65,7 @@ function showPost(post) {
 		<button id ="closeModalButton">Close</button>
     </form>`;
 
-    document.querySelector("#postDetails").innerHTML = dialogHTML;
-  }
+  document.querySelector("#postDetails").innerHTML = dialogHTML;
 }
 
 async function deletePost(id) {
@@ -83,6 +77,42 @@ async function deletePost(id) {
   }
 }
 // === UPDATE (PUT) === //
+function updateClicked() {
+  document.querySelector("#update-form").showModal();
+  const updatePostForm = /*html*/ `
+    <form id="update-post">
+      <label for image-url>
+        Image URL:
+      </label>
+      <input type="url" id="image" name="image"/>
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required />
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description" />
+      <div id="privacy">
+        <label for privacy_settings_public>
+          Public
+        </label>
+        <input type="radio" id="public" name="public" value="public" />
+        <label for privacy_settings_private>
+          Private
+        </label>
+        <input type="radio" id="private" name="private" value="private" />
+      </div>
+      <input type="button" id="btn-submit" value="Post">
+    </form>
+    `;
+  document.querySelector("#update-form").innerHTML = updatePostForm;
+  document.querySelector("#btn-submit").addEventListener("click", prepareUpdatedPostData);
+}
+function prepareUpdatedPostData() {
+  console.log("prepareNewPostData is running");
+
+  const image = document.querySelector("#image").value;
+  const title = document.querySelector("#title").value;
+  const body = document.querySelector("#description").value;
+  updatePost(post.id, title, body, image);
+}
 async function updatePost(id, title, body, image) {
   const postToUpdate = { title, body, image };
   const postAsJson = JSON.stringify(postToUpdate);
