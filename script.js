@@ -53,6 +53,46 @@ function showPost(post) {
   function deleteClicked() {
     deletePost(post.id);
   }
+  function updateClicked() {
+    document.querySelector("#update-form").showModal();
+    const updatePostForm = /*html*/ `
+    <form id="update-post">
+      <label for image-url>
+        Image URL:
+      </label>
+      <input type="url" id="image" name="image"/>
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required />
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description" />
+      <div id="privacy">
+        <label for privacy_settings_public>
+          Public
+        </label>
+        <input type="radio" id="public" name="public" value="public" />
+        <label for privacy_settings_private>
+          Private
+        </label>
+        <input type="radio" id="private" name="private" value="private" />
+      </div>
+      <input type="button" id="btn-submit" value="Update">
+    </form>
+    `;
+    document.querySelector("#update-form").innerHTML = updatePostForm;
+    const currentPostElement = this.parentNode.parentNode;
+    const currentPost = {
+      id: currentPostElement.getAttribute("data-id"),
+      title: currentPostElement.querySelector("h1").textContent,
+      body: currentPostElement.querySelector("h2").textContent,
+      image: currentPostElement.querySelector("img").src,
+    };
+    document.querySelector("#image").value = currentPost.image;
+    document.querySelector("#title").value = currentPost.title;
+    document.querySelector("#description").value = currentPost.body;
+    document.querySelector("#btn-submit").addEventListener("click", function () {
+      prepareUpdatedPostData(currentPost);
+    });
+  }
 }
 function clickPost() {
   console.log("clickPost is running");
@@ -77,61 +117,29 @@ async function deletePost(id) {
   }
 }
 // === UPDATE (PUT) === //
-function updateClicked() {
-  document.querySelector("#update-form").showModal();
-  const updatePostForm = /*html*/ `
-    <form id="update-post">
-      <label for image-url>
-        Image URL:
-      </label>
-      <input type="url" id="image" name="image"/>
-      <label for="title">Title:</label>
-      <input type="text" id="title" name="title" required />
-      <label for="description">Description:</label>
-      <input type="text" id="description" name="description" />
-      <div id="privacy">
-        <label for privacy_settings_public>
-          Public
-        </label>
-        <input type="radio" id="public" name="public" value="public" />
-        <label for privacy_settings_private>
-          Private
-        </label>
-        <input type="radio" id="private" name="private" value="private" />
-      </div>
-      <input type="button" id="btn-submit" value="Post">
-    </form>
-    `;
-  document.querySelector("#update-form").innerHTML = updatePostForm;
-  document.querySelector("#btn-submit").addEventListener("click", prepareUpdatedPostData);
-}
-function prepareUpdatedPostData() {
-  console.log("prepareNewPostData is running");
+
+function prepareUpdatedPostData(post) {
+  console.log("prepareUpdatedPostData is running");
 
   const image = document.querySelector("#image").value;
   const title = document.querySelector("#title").value;
   const body = document.querySelector("#description").value;
-  updatePost(post.id, title, body, image);
+  submitUpdatedPost(post.id, title, body, image);
 }
-async function updatePost(id, title, body, image) {
-  const postToUpdate = { title, body, image };
+async function submitUpdatedPost(id, title, body, image) {
+  const postToUpdate = { id, title, body, image };
   const postAsJson = JSON.stringify(postToUpdate);
   const url = `${endpoint}/posts/${id}.json`;
 
   const response = await fetch(url, { method: "PUT", body: postAsJson });
   if (response.ok) {
     console.log("Post succesfully updated");
+    document.querySelector("#update-form").close();
     updatePostsGrid();
   }
 }
 // === CREATE (POST) === //
 function createPostClicked(event) {
-  //HARDCODED
-  // const randomNumber = Math.floor(Math.random() * 100 + 1);
-  // const title = `My post title ${randomNumber}`;
-  // const body = "Body text 123";
-  // const image = "https://images.twinkl.co.uk/tr/raw/upload/u/ux/usawiki-fish-clownfish_ver_1.jpg";
-  //open modal to show form
   document.querySelector("#create-form").showModal();
   const createPostForm = /*html*/ `
     <form id="create-post">
