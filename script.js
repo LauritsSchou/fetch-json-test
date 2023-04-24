@@ -79,25 +79,19 @@ function showPost(post) {
     </form>
     `;
     document.querySelector("#update-form").innerHTML = updatePostForm;
-    const currentPostElement = this.parentNode.parentNode;
-    const currentPost = {
-      id: currentPostElement.getAttribute("data-id"),
-      title: currentPostElement.querySelector("h1").textContent,
-      body: currentPostElement.querySelector("h2").textContent,
-      image: currentPostElement.querySelector("img").src,
-    };
-    document.querySelector("#image").value = currentPost.image;
-    document.querySelector("#title").value = currentPost.title;
-    document.querySelector("#description").value = currentPost.body;
+    console.log(post.id);
+    document.querySelector("#image").value = post.image;
+    document.querySelector("#title").value = post.title;
+    document.querySelector("#description").value = post.body;
     document.querySelector("#btn-submit").addEventListener("click", function () {
-      prepareUpdatedPostData(currentPost);
+      prepareUpdatedPostData(post);
     });
   }
-}
-function clickPost() {
-  console.log("clickPost is running");
-  document.querySelector("#postDetails").showModal();
-  const dialogHTML = /*html*/ `
+
+  function clickPost() {
+    console.log("clickPost is running");
+    document.querySelector("#postDetails").showModal();
+    const dialogHTML = /*html*/ `
     <h1>${post.title}</h1>
 <img src="${post.image}" class="center">
 <h2>${post.body}</h2>
@@ -105,20 +99,22 @@ function clickPost() {
 		<button id ="closeModalButton">Close</button>
     </form>`;
 
-  document.querySelector("#postDetails").innerHTML = dialogHTML;
-}
+    document.querySelector("#postDetails").innerHTML = dialogHTML;
+  }
 
-async function deletePost(id) {
-  const response = await fetch(`${endpoint}/posts/${id}.json`, {
-    method: "DELETE",
-  });
-  if (response.ok) {
-    updatePostsGrid();
+  async function deletePost(id) {
+    const response = await fetch(`${endpoint}/posts/${id}.json`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      updatePostsGrid();
+    }
   }
 }
 // === UPDATE (PUT) === //
 
 function prepareUpdatedPostData(post) {
+  console.log(post.id);
   console.log("prepareUpdatedPostData is running");
 
   const image = document.querySelector("#image").value;
@@ -127,6 +123,7 @@ function prepareUpdatedPostData(post) {
   submitUpdatedPost(post.id, title, body, image);
 }
 async function submitUpdatedPost(id, title, body, image) {
+  console.log(id);
   const postToUpdate = { id, title, body, image };
   const postAsJson = JSON.stringify(postToUpdate);
   const url = `${endpoint}/posts/${id}.json`;
@@ -143,14 +140,14 @@ function createPostClicked(event) {
   document.querySelector("#create-form").showModal();
   const createPostForm = /*html*/ `
     <form id="create-post">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required /><br>
       <label for image-url>
         Image URL:
       </label>
-      <input type="url" id="image" name="image"/>
-      <label for="title">Title:</label>
-      <input type="text" id="title" name="title" required />
+      <input type="url" id="image" name="image"/><br>
       <label for="description">Description:</label>
-      <input type="text" id="description" name="description" />
+      <input type="text" id="description" name="description" /><br>
       <div id="privacy">
         <label for privacy_settings_public>
           Public
