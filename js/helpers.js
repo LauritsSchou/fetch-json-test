@@ -15,5 +15,4 @@ function compareBody(post1, post2) {
   return post1.body.localeCompare(post2.body);
 }
 
-// compareTitle and compareBody here
 export { preparePostData, compareTitle, compareBody };

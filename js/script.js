@@ -88,6 +88,7 @@ function updateClicked(post) {
         <input type="radio" id="private" name="private" value="private" />
       </div>
       <input type="button" id="btn-submit" value="Update">
+      <input type="button" id="btn-cancel" value="Cancel">
     </form>
     `;
   document.querySelector("#update-form").innerHTML = updatePostForm;
@@ -98,6 +99,9 @@ function updateClicked(post) {
   document
     .querySelector("#btn-submit")
     .addEventListener("click", () => prepareUpdatedPostData(post));
+  document.querySelector("#btn-cancel").addEventListener("click", () => {
+    document.querySelector("#update-form").close();
+  });
 }
 
 function postClicked(post) {
@@ -154,12 +158,16 @@ function createPostClicked(event) {
         <input type="radio" id="private" name="private" value="private" />
       </div>
       <input type="button" id="btn-submit" value="Post">
+      <input type="button" id="btn-cancel" value="Cancel">
     </form>
     `;
   document.querySelector("#create-form").innerHTML = createPostForm;
   document
     .querySelector("#btn-submit")
     .addEventListener("click", prepareNewPostData);
+  document.querySelector("#btn-cancel").addEventListener("click", () => {
+    document.querySelector("#create-form").close();
+  });
 }
 async function prepareNewPostData() {
   console.log("prepareNewPostData is running");

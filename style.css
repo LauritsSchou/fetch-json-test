@@ -165,3 +165,41 @@ label[for="input-search"] {
 .tools-grid {
   padding-left: 40px;
 }
+#btn-submit {
+  background-color: #fff;
+  color: black;
+  font-size: 17px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 1px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  font-family: "Carlito", sans-serif;
+  text-align: left;
+  justify-content: flex-start;
+  margin-top: auto;
+}
+#btn-cancel {
+  background-color: #fff;
+  color: black;
+  font-size: 17px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 1px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  font-family: "Carlito", sans-serif;
+  text-align: left;
+  justify-content: flex-start;
+  margin-top: auto;
+}
+#btn-cancel:hover {
+  box-shadow: 0 8px 16px 0;
+}
+#btn-submit:hover {
+  box-shadow: 0 8px 16px 0;
+}
