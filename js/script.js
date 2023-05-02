@@ -1,14 +1,29 @@
 "use strict";
-import { getPosts, deletePost, submitUpdatedPost, submitNewPost } from "./rest-service.js";
+import {
+  getPosts,
+  deletePost,
+  submitUpdatedPost,
+  submitNewPost,
+} from "./rest-service.js";
+import { compareTitle, compareBody } from "./helpers.js";
 window.addEventListener("load", initApp);
 async function initApp() {
   console.log("initApp is running");
   // const users = await getUsers();
   // users.forEach(showUsers);
   updatePostsGrid();
-  document.querySelector(".create").addEventListener("click", createPostClicked);
-  document.querySelector("#input-search").addEventListener("keyup", inputSearchChanged);
-  document.querySelector("#input-search").addEventListener("search", inputSearchChanged);
+  document
+    .querySelector("#select-sort-by")
+    .addEventListener("change", sortByChanged);
+  document
+    .querySelector(".create")
+    .addEventListener("click", createPostClicked);
+  document
+    .querySelector("#input-search")
+    .addEventListener("keyup", inputSearchChanged);
+  document
+    .querySelector("#input-search")
+    .addEventListener("search", inputSearchChanged);
 }
 async function updatePostsGrid() {
   const posts = await getPosts();
@@ -34,9 +49,15 @@ function showPost(post) {
                 
             </article>`;
   document.querySelector("#posts").insertAdjacentHTML("beforeend", postHTML);
-  document.querySelector("#posts article:last-child img").addEventListener("click", () => postClicked(post));
-  document.querySelector("#posts article:last-child .delete").addEventListener("click", () => deleteClicked(post));
-  document.querySelector("#posts article:last-child .update").addEventListener("click", () => updateClicked(post));
+  document
+    .querySelector("#posts article:last-child img")
+    .addEventListener("click", () => postClicked(post));
+  document
+    .querySelector("#posts article:last-child .delete")
+    .addEventListener("click", () => deleteClicked(post));
+  document
+    .querySelector("#posts article:last-child .update")
+    .addEventListener("click", () => updateClicked(post));
 }
 async function deleteClicked(post) {
   const response = await deletePost(post.id);
@@ -74,7 +95,9 @@ function updateClicked(post) {
   document.querySelector("#image").value = post.image;
   document.querySelector("#title").value = post.title;
   document.querySelector("#description").value = post.body;
-  document.querySelector("#btn-submit").addEventListener("click", () => prepareUpdatedPostData(post));
+  document
+    .querySelector("#btn-submit")
+    .addEventListener("click", () => prepareUpdatedPostData(post));
 }
 
 function postClicked(post) {
@@ -134,7 +157,9 @@ function createPostClicked(event) {
     </form>
     `;
   document.querySelector("#create-form").innerHTML = createPostForm;
-  document.querySelector("#btn-submit").addEventListener("click", prepareNewPostData);
+  document
+    .querySelector("#btn-submit")
+    .addEventListener("click", prepareNewPostData);
 }
 async function prepareNewPostData() {
   console.log("prepareNewPostData is running");
@@ -151,6 +176,22 @@ async function prepareNewPostData() {
 async function inputSearchChanged(event) {
   const query = event.target.value.toLowerCase();
   const posts = await getPosts();
-  const filteredPosts = posts.filter((post) => post.title.toLowerCase().includes(query) || post.body.toLowerCase().includes(query));
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(query) ||
+      post.body.toLowerCase().includes(query)
+  );
   showPosts(filteredPosts);
+}
+async function sortByChanged() {
+  const sortField = document.querySelector("#select-sort-by").value;
+  const posts = await getPosts();
+
+  if (sortField === "title") {
+    posts.sort(compareTitle);
+  } else if (sortField === "body") {
+    posts.sort(compareBody);
+  }
+
+  showPosts(posts);
 }

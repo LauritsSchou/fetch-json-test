@@ -7,6 +7,13 @@ function preparePostData(dataObject) {
   }
   return postArray;
 }
+function compareTitle(post1, post2) {
+  return post1.title.localeCompare(post2.title);
+}
+
+function compareBody(post1, post2) {
+  return post1.body.localeCompare(post2.body);
+}
 
 // compareTitle and compareBody here
-export { preparePostData };
+export { preparePostData, compareTitle, compareBody };
