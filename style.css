@@ -73,6 +73,9 @@ main {
   width: 400px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .grid-item:hover {

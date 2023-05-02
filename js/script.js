@@ -110,31 +110,7 @@ async function prepareUpdatedPostData(post) {
 // === CREATE (POST) === //
 function createPostClicked(event) {
   document.querySelector("#create-form").showModal();
-  const createPostForm = /*html*/ `
-    <form id="create-post">
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" placeholder ="Your title here" required /><br>
-      <label for image-url>
-        Image URL:
-      </label>
-      <input type="url" id="image" name="image" placeholder="Your image URL here"/><br>
-      <label for="description">Description:</label>
-      <input type="text" id="description" name="description" placeholder="Your description here"/><br>
-      <div id="privacy">
-        <label for privacy_settings_public>
-          Public
-        </label>
-        <input type="radio" id="public" name="public" value="public" />
-        <label for privacy_settings_private>
-          Private
-        </label>
-        <input type="radio" id="private" name="private" value="private" />
-      </div>
-      <input type="button" id="btn-submit" value="Post">
-    </form>
-    `;
-  document.querySelector("#create-form").innerHTML = createPostForm;
-  document.querySelector("#btn-submit").addEventListener("click", prepareNewPostData);
+  document.querySelector("#create-form").addEventListener("submit", prepareNewPostData);
 }
 async function prepareNewPostData() {
   console.log("prepareNewPostData is running");
