@@ -1,5 +1,5 @@
 "use strict";
-const endpoint = "https://forms-rest-crud-project-default-rtdb.europe-west1.firebasedatabase.app/";
+import { getPosts, deletePost, submitUpdatedPost, submitNewPost } from "./rest-service.js";
 window.addEventListener("load", initApp);
 async function initApp() {
   console.log("initApp is running");
@@ -12,22 +12,7 @@ async function updatePostsGrid() {
   const posts = await getPosts();
   showPosts(posts);
 }
-async function getPosts() {
-  const response = await fetch(`${endpoint}/posts.json`);
-  const data = await response.json();
-  const posts = preparePostData(data);
-  preparePostData(data);
-  return posts;
-}
-function preparePostData(dataObject) {
-  const postArray = [];
-  for (const key in dataObject) {
-    const post = dataObject[key];
-    post.id = key;
-    postArray.push(post);
-  }
-  return postArray;
-}
+
 function showPosts(listOfPosts) {
   document.querySelector("#posts").innerHTML = "";
   for (const post of listOfPosts) {
@@ -47,15 +32,19 @@ function showPost(post) {
                 
             </article>`;
   document.querySelector("#posts").insertAdjacentHTML("beforeend", postHTML);
-  document.querySelector("#posts article:last-child img").addEventListener("click", clickPost);
-  document.querySelector("#posts article:last-child .delete").addEventListener("click", deleteClicked);
-  document.querySelector("#posts article:last-child .update").addEventListener("click", updateClicked);
-  function deleteClicked() {
-    deletePost(post.id);
+  document.querySelector("#posts article:last-child img").addEventListener("click", () => postClicked(post));
+  document.querySelector("#posts article:last-child .delete").addEventListener("click", () => deleteClicked(post));
+  document.querySelector("#posts article:last-child .update").addEventListener("click", () => updateClicked(post));
+}
+async function deleteClicked(post) {
+  const response = await deletePost(post.id);
+  if (response.ok) {
+    updatePostsGrid();
   }
-  function updateClicked() {
-    document.querySelector("#update-form").showModal();
-    const updatePostForm = /*html*/ `
+}
+function updateClicked(post) {
+  document.querySelector("#update-form").showModal();
+  const updatePostForm = /*html*/ `
     <form id="update-post">
       <label for image-url>
         Image URL:
@@ -78,20 +67,18 @@ function showPost(post) {
       <input type="button" id="btn-submit" value="Update">
     </form>
     `;
-    document.querySelector("#update-form").innerHTML = updatePostForm;
-    console.log(post.id);
-    document.querySelector("#image").value = post.image;
-    document.querySelector("#title").value = post.title;
-    document.querySelector("#description").value = post.body;
-    document.querySelector("#btn-submit").addEventListener("click", function () {
-      prepareUpdatedPostData(post);
-    });
-  }
+  document.querySelector("#update-form").innerHTML = updatePostForm;
+  console.log(post.id);
+  document.querySelector("#image").value = post.image;
+  document.querySelector("#title").value = post.title;
+  document.querySelector("#description").value = post.body;
+  document.querySelector("#btn-submit").addEventListener("click", () => prepareUpdatedPostData(post));
+}
 
-  function clickPost() {
-    console.log("clickPost is running");
-    document.querySelector("#postDetails").showModal();
-    const dialogHTML = /*html*/ `
+function postClicked(post) {
+  console.log("clickPost is running");
+  document.querySelector("#postDetails").showModal();
+  const dialogHTML = /*html*/ `
     <h1>${post.title}</h1>
 <img src="${post.image}" class="center">
 <h2>${post.body}</h2>
@@ -99,42 +86,25 @@ function showPost(post) {
 		<button id ="closeModalButton">Close</button>
     </form>`;
 
-    document.querySelector("#postDetails").innerHTML = dialogHTML;
-  }
-
-  async function deletePost(id) {
-    const response = await fetch(`${endpoint}/posts/${id}.json`, {
-      method: "DELETE",
-    });
-    if (response.ok) {
-      updatePostsGrid();
-    }
-  }
+  document.querySelector("#postDetails").innerHTML = dialogHTML;
 }
 // === UPDATE (PUT) === //
 
-function prepareUpdatedPostData(post) {
+async function prepareUpdatedPostData(post) {
   console.log(post.id);
   console.log("prepareUpdatedPostData is running");
 
   const image = document.querySelector("#image").value;
   const title = document.querySelector("#title").value;
   const body = document.querySelector("#description").value;
-  submitUpdatedPost(post.id, title, body, image);
-}
-async function submitUpdatedPost(id, title, body, image) {
-  console.log(id);
-  const postToUpdate = { id, title, body, image };
-  const postAsJson = JSON.stringify(postToUpdate);
-  const url = `${endpoint}/posts/${id}.json`;
 
-  const response = await fetch(url, { method: "PUT", body: postAsJson });
+  const response = await submitUpdatedPost(post.id, title, body, image);
   if (response.ok) {
-    console.log("Post succesfully updated");
     document.querySelector("#update-form").close();
     updatePostsGrid();
   }
 }
+
 // === CREATE (POST) === //
 function createPostClicked(event) {
   document.querySelector("#create-form").showModal();
@@ -164,21 +134,14 @@ function createPostClicked(event) {
   document.querySelector("#create-form").innerHTML = createPostForm;
   document.querySelector("#btn-submit").addEventListener("click", prepareNewPostData);
 }
-function prepareNewPostData() {
+async function prepareNewPostData() {
   console.log("prepareNewPostData is running");
 
   const image = document.querySelector("#image").value;
   const title = document.querySelector("#title").value;
   const body = document.querySelector("#description").value;
-  submitNewPost(image, title, body);
-}
-async function submitNewPost(image, title, body) {
-  console.log("submitNewPost is running");
-  const newPost = { image, title, body };
-  const postAsJson = JSON.stringify(newPost);
-  const response = await fetch(`${endpoint}/posts.json`, { method: "POST", body: postAsJson });
+  const response = await submitNewPost(image, title, body);
   if (response.ok) {
-    console.log("New post added");
     updatePostsGrid();
     document.querySelector("#create-form").close();
   }
