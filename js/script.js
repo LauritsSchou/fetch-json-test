@@ -7,6 +7,8 @@ async function initApp() {
   // users.forEach(showUsers);
   updatePostsGrid();
   document.querySelector(".create").addEventListener("click", createPostClicked);
+  document.querySelector("#input-search").addEventListener("keyup", inputSearchChanged);
+  document.querySelector("#input-search").addEventListener("search", inputSearchChanged);
 }
 async function updatePostsGrid() {
   const posts = await getPosts();
@@ -145,4 +147,10 @@ async function prepareNewPostData() {
     updatePostsGrid();
     document.querySelector("#create-form").close();
   }
+}
+async function inputSearchChanged(event) {
+  const query = event.target.value.toLowerCase();
+  const posts = await getPosts();
+  const filteredPosts = posts.filter((post) => post.title.toLowerCase().includes(query) || post.body.toLowerCase().includes(query));
+  showPosts(filteredPosts);
 }
