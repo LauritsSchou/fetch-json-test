@@ -113,13 +113,13 @@ function createPostClicked(event) {
   const createPostForm = /*html*/ `
     <form id="create-post">
     <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required /><br>
+    <input type="text" id="title" name="title" placeholder ="Your title here" required /><br>
       <label for image-url>
         Image URL:
       </label>
-      <input type="url" id="image" name="image"/><br>
+      <input type="url" id="image" name="image" placeholder="Your image URL here"/><br>
       <label for="description">Description:</label>
-      <input type="text" id="description" name="description" /><br>
+      <input type="text" id="description" name="description" placeholder="Your description here"/><br>
       <div id="privacy">
         <label for privacy_settings_public>
           Public
