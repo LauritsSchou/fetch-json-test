@@ -51,9 +51,9 @@ function updateClicked(post) {
       <label for image-url>
         Image URL:
       </label>
-      <input type="url" id="image" name="image"/>
       <label for="title">Title:</label>
       <input type="text" id="title" name="title" required />
+      <input type="url" id="image" name="image"/>
       <label for="description">Description:</label>
       <input type="text" id="description" name="description" />
       <div id="privacy">
