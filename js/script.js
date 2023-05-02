@@ -48,11 +48,11 @@ function updateClicked(post) {
   document.querySelector("#update-form").showModal();
   const updatePostForm = /*html*/ `
     <form id="update-post">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required />
       <label for image-url>
         Image URL:
       </label>
-      <label for="title">Title:</label>
-      <input type="text" id="title" name="title" required />
       <input type="url" id="image" name="image"/>
       <label for="description">Description:</label>
       <input type="text" id="description" name="description" />
@@ -110,7 +110,31 @@ async function prepareUpdatedPostData(post) {
 // === CREATE (POST) === //
 function createPostClicked(event) {
   document.querySelector("#create-form").showModal();
-  document.querySelector("#create-form").addEventListener("submit", prepareNewPostData);
+  const createPostForm = /*html*/ `
+    <form id="update-post">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required />
+      <label for image-url>
+        Image URL:
+      </label>
+      <input type="url" id="image" name="image"/>
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description" />
+      <div id="privacy">
+        <label for privacy_settings_public>
+          Public
+        </label>
+        <input type="radio" id="public" name="public" value="public" />
+        <label for privacy_settings_private>
+          Private
+        </label>
+        <input type="radio" id="private" name="private" value="private" />
+      </div>
+      <input type="button" id="btn-submit" value="Post">
+    </form>
+    `;
+  document.querySelector("#create-form").innerHTML = createPostForm;
+  document.querySelector("#btn-submit").addEventListener("click", prepareNewPostData);
 }
 async function prepareNewPostData() {
   console.log("prepareNewPostData is running");
