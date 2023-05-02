@@ -55,12 +55,16 @@ main {
     grid-template-columns: 1fr 1fr;
   }
 }
-@media (min-width: 1500px) {
+@media (min-width: 1200px) {
   .grid-container {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
-
+@media (min-width: 1500px) {
+  .grid-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
 /* ---------- grid item styling ---------- */
 
 .grid-item {
