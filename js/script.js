@@ -3,7 +3,6 @@ import { getPosts, deletePost, submitUpdatedPost, submitNewPost } from "./rest-s
 import { compareTitle, compareBody } from "./helpers.js";
 window.addEventListener("load", initApp);
 async function initApp() {
-  console.log("initApp is running");
   updatePostsGrid();
   document.querySelector("#select-sort-by").addEventListener("change", sortByChanged);
   document.querySelector(".create").addEventListener("click", createPostClicked);
@@ -22,7 +21,6 @@ function showPosts(listOfPosts) {
   }
 }
 function showPost(post) {
-  console.log("showPosts is running");
   const postHTML = /*html*/ ` <article class="grid-item">
                 <img src="${post.image}">
                 <h1>${post.title}</h1>
@@ -62,7 +60,6 @@ function updateClicked(post) {
     </form>
     `;
   document.querySelector("#update-form").innerHTML = updatePostForm;
-  console.log(post.id);
   document.querySelector("#image").value = post.image;
   document.querySelector("#title").value = post.title;
   document.querySelector("#description").value = post.body;
@@ -73,7 +70,6 @@ function updateClicked(post) {
 }
 
 function postClicked(post) {
-  console.log("clickPost is running");
   document.querySelector("#postDetails").showModal();
   const dialogHTML = /*html*/ `
     <h1>${post.title}</h1>
@@ -88,9 +84,6 @@ function postClicked(post) {
 // === UPDATE (PUT) === //
 
 async function prepareUpdatedPostData(post) {
-  console.log(post.id);
-  console.log("prepareUpdatedPostData is running");
-
   const image = document.querySelector("#image").value;
   const title = document.querySelector("#title").value;
   const body = document.querySelector("#description").value;
@@ -127,8 +120,6 @@ function createPostClicked(event) {
   });
 }
 async function prepareNewPostData() {
-  console.log("prepareNewPostData is running");
-
   const image = document.querySelector("#image").value;
   const title = document.querySelector("#title").value;
   const body = document.querySelector("#description").value;
