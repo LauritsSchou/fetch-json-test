@@ -4,8 +4,6 @@ import { compareTitle, compareBody } from "./helpers.js";
 window.addEventListener("load", initApp);
 async function initApp() {
   console.log("initApp is running");
-  // const users = await getUsers();
-  // users.forEach(showUsers);
   updatePostsGrid();
   document.querySelector("#select-sort-by").addEventListener("change", sortByChanged);
   document.querySelector(".create").addEventListener("click", createPostClicked);
