@@ -51,23 +51,14 @@ function updateClicked(post) {
   const updatePostForm = /*html*/ `
     <form id="update-post" method="dialog">
     <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required />
+    <input type="text" id="title" name="title" required maxlength="20" />
       <label for image-url>
         Image URL:
       </label>
       <input type="url" id="image" name="image"/>
       <label for="description">Description:</label>
-      <input type="text" id="description" name="description" />
-      <div id="privacy">
-        <label for privacy_settings_public>
-          Public
-        </label>
-        <input type="radio" id="public" name="public" value="public" />
-        <label for privacy_settings_private>
-          Private
-        </label>
-        <input type="radio" id="private" name="private" value="private" />
-      </div>
+      <input type="text" id="description" name="description" maxlength="140" />
+      <br>
       <button>Update</button>
       <input type="button" id="btn-cancel" value="Cancel">
     </form>
@@ -119,23 +110,14 @@ function createPostClicked(event) {
   const createPostForm = /*html*/ `
     <form id="update-post" method="dialog">
     <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required />
+    <input type="text" id="title" name="title" required maxlength="20" />
       <label for image-url>
         Image URL:
       </label>
       <input type="url" id="image" name="image"/>
       <label for="description">Description:</label>
-      <input type="text" id="description" name="description" />
-      <div id="privacy">
-        <label for privacy_settings_public>
-          Public
-        </label>
-        <input type="radio" id="public" name="public" value="public" />
-        <label for privacy_settings_private>
-          Private
-        </label>
-        <input type="radio" id="private" name="private" value="private" />
-      </div>
+      <input type="text" id="description" name="description" maxlength="140" />
+      <br>
       <button>Submit</button>
       <input type="button" id="btn-cancel" value="Cancel">
     </form>
