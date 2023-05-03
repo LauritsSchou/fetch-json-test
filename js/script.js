@@ -1,10 +1,5 @@
 "use strict";
-import {
-  getPosts,
-  deletePost,
-  submitUpdatedPost,
-  submitNewPost,
-} from "./rest-service.js";
+import { getPosts, deletePost, submitUpdatedPost, submitNewPost } from "./rest-service.js";
 import { compareTitle, compareBody } from "./helpers.js";
 window.addEventListener("load", initApp);
 async function initApp() {
@@ -12,18 +7,10 @@ async function initApp() {
   // const users = await getUsers();
   // users.forEach(showUsers);
   updatePostsGrid();
-  document
-    .querySelector("#select-sort-by")
-    .addEventListener("change", sortByChanged);
-  document
-    .querySelector(".create")
-    .addEventListener("click", createPostClicked);
-  document
-    .querySelector("#input-search")
-    .addEventListener("keyup", inputSearchChanged);
-  document
-    .querySelector("#input-search")
-    .addEventListener("search", inputSearchChanged);
+  document.querySelector("#select-sort-by").addEventListener("change", sortByChanged);
+  document.querySelector(".create").addEventListener("click", createPostClicked);
+  document.querySelector("#input-search").addEventListener("keyup", inputSearchChanged);
+  document.querySelector("#input-search").addEventListener("search", inputSearchChanged);
 }
 async function updatePostsGrid() {
   const posts = await getPosts();
@@ -49,15 +36,9 @@ function showPost(post) {
                 
             </article>`;
   document.querySelector("#posts").insertAdjacentHTML("beforeend", postHTML);
-  document
-    .querySelector("#posts article:last-child img")
-    .addEventListener("click", () => postClicked(post));
-  document
-    .querySelector("#posts article:last-child .delete")
-    .addEventListener("click", () => deleteClicked(post));
-  document
-    .querySelector("#posts article:last-child .update")
-    .addEventListener("click", () => updateClicked(post));
+  document.querySelector("#posts article:last-child img").addEventListener("click", () => postClicked(post));
+  document.querySelector("#posts article:last-child .delete").addEventListener("click", () => deleteClicked(post));
+  document.querySelector("#posts article:last-child .update").addEventListener("click", () => updateClicked(post));
 }
 async function deleteClicked(post) {
   const response = await deletePost(post.id);
@@ -68,7 +49,7 @@ async function deleteClicked(post) {
 function updateClicked(post) {
   document.querySelector("#update-form").showModal();
   const updatePostForm = /*html*/ `
-    <form id="update-post">
+    <form id="update-post" method="dialog">
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" required />
       <label for image-url>
@@ -87,7 +68,7 @@ function updateClicked(post) {
         </label>
         <input type="radio" id="private" name="private" value="private" />
       </div>
-      <input type="button" id="btn-submit" value="Update">
+      <button>Update</button>
       <input type="button" id="btn-cancel" value="Cancel">
     </form>
     `;
@@ -96,9 +77,7 @@ function updateClicked(post) {
   document.querySelector("#image").value = post.image;
   document.querySelector("#title").value = post.title;
   document.querySelector("#description").value = post.body;
-  document
-    .querySelector("#btn-submit")
-    .addEventListener("click", () => prepareUpdatedPostData(post));
+  document.querySelector("#update-form").addEventListener("submit", () => prepareUpdatedPostData(post));
   document.querySelector("#btn-cancel").addEventListener("click", () => {
     document.querySelector("#update-form").close();
   });
@@ -138,7 +117,7 @@ async function prepareUpdatedPostData(post) {
 function createPostClicked(event) {
   document.querySelector("#create-form").showModal();
   const createPostForm = /*html*/ `
-    <form id="update-post">
+    <form id="update-post" method="dialog">
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" required />
       <label for image-url>
@@ -157,14 +136,12 @@ function createPostClicked(event) {
         </label>
         <input type="radio" id="private" name="private" value="private" />
       </div>
-      <input type="button" id="btn-submit" value="Post">
+      <button>Submit</button>
       <input type="button" id="btn-cancel" value="Cancel">
     </form>
     `;
   document.querySelector("#create-form").innerHTML = createPostForm;
-  document
-    .querySelector("#btn-submit")
-    .addEventListener("click", prepareNewPostData);
+  document.querySelector("#create-form").addEventListener("submit", prepareNewPostData);
   document.querySelector("#btn-cancel").addEventListener("click", () => {
     document.querySelector("#create-form").close();
   });
@@ -184,11 +161,7 @@ async function prepareNewPostData() {
 async function inputSearchChanged(event) {
   const query = event.target.value.toLowerCase();
   const posts = await getPosts();
-  const filteredPosts = posts.filter(
-    (post) =>
-      post.title.toLowerCase().includes(query) ||
-      post.body.toLowerCase().includes(query)
-  );
+  const filteredPosts = posts.filter((post) => post.title.toLowerCase().includes(query) || post.body.toLowerCase().includes(query));
   showPosts(filteredPosts);
 }
 async function sortByChanged() {
@@ -202,4 +175,11 @@ async function sortByChanged() {
   }
 
   showPosts(posts);
+}
+function validateForm() {
+  let title = document.forms["create-form"]["title"].value;
+  if (title === "") {
+    alert("Title must be filled out");
+    return false;
+  }
 }
