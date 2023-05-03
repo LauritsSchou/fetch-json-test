@@ -89,7 +89,7 @@ function postClicked(post) {
   const dialogHTML = /*html*/ `
     <h1>${post.title}</h1>
 <img src="${post.image}" class="center">
-<h2>${post.body}</h2>
+<p>${post.body}</p>
     <form method="dialog">
 		<button id ="closeModalButton">Close</button>
     </form>`;
@@ -176,4 +176,3 @@ async function sortByChanged() {
 
   showPosts(posts);
 }
-

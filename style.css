@@ -203,3 +203,49 @@ label[for="input-search"] {
 #btn-submit:hover {
   box-shadow: 0 8px 16px 0;
 }
+#postDetails {
+  text-align: center;
+}
+
+#postDetails h1 {
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+#postDetails img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 40px auto;
+}
+
+#postDetails p {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  white-space: pre-line;
+}
+
+#postDetails button {
+  background-color: #fff;
+  color: black;
+  font-size: 17px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 1px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  font-family: "Carlito", sans-serif;
+  text-align: left;
+  justify-content: flex-start;
+  margin-top: auto;
+}
+
+#postDetails button:hover {
+  box-shadow: 0 8px 16px 0;
+}
+
+#postDetails form {
+  text-align: center;
+}
