@@ -176,10 +176,4 @@ async function sortByChanged() {
 
   showPosts(posts);
 }
-function validateForm() {
-  let title = document.forms["create-form"]["title"].value;
-  if (title === "") {
-    alert("Title must be filled out");
-    return false;
-  }
-}
+
