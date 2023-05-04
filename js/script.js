@@ -101,13 +101,13 @@ function createPostClicked(event) {
   const createPostForm = /*html*/ `
     <form id="update-post" method="dialog">
     <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required maxlength="20" />
+    <input type="text" id="title" name="title" required maxlength="20" placeholder="Your title here" />
       <label for image-url>
         Image URL:
       </label>
-      <input type="url" id="image" name="image"/>
+      <input type="url" id="image" name="image" placeholder="Your image URL here"/>
       <label for="description">Description:</label>
-      <input type="text" id="description" name="description" maxlength="140" />
+      <input type="text" id="description" name="description" maxlength="140" placeholder="Your description here" />
       <br>
       <button>Submit</button>
       <input type="button" id="btn-cancel" value="Cancel">
